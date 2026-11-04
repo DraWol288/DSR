@@ -322,3 +322,54 @@ document.getElementById('readMoreBtn').addEventListener('click', function() {
     this.style.display = 'none';
     document.getElementById('formSection').scrollIntoView({ behavior: 'smooth' });
 });
+
+// 12. Отправка формы через Fetch (без перезагрузки страницы)
+const contactForm = document.getElementById('contactForm');
+const successToast = document.getElementById('successToast');
+const submitBtn = document.getElementById('submitBtn');
+
+contactForm.addEventListener('submit', function(e) {
+    e.preventDefault(); // Отменяем стандартную отправку (перезагрузку)
+
+    // Меняем текст кнопки, чтобы показать, что идет процесс
+    const originalBtnText = submitBtn.innerText;
+    submitBtn.innerText = 'Отправка...';
+    submitBtn.disabled = true;
+
+    // Собираем данные из формы
+    const formData = new FormData(contactForm);
+
+    // Отправляем на Formspree
+    // ВАЖНО: Замени xwllyblg на свой ID, если он другой!
+    fetch('https://formspree.io/f/xwllyblg', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            // Успех!
+            contactForm.reset(); // Очищаем поля
+            successToast.classList.add('show'); // Показываем плашку
+
+            // Скрываем плашку через 4 секунды
+            setTimeout(() => {
+                successToast.classList.remove('show');
+            }, 4000);
+        } else {
+            // Ошибка на стороне сервера
+            alert('Ой, что-то пошло не так. Попробуй еще раз!');
+        }
+    })
+    .catch(error => {
+        // Ошибка сети (например, нет интернета)
+        alert('Ошибка сети. Проверь подключение к интернету.');
+    })
+    .finally(() => {
+        // Возвращаем кнопку в исходное состояние
+        submitBtn.innerText = originalBtnText;
+        submitBtn.disabled = false;
+    });
+});
