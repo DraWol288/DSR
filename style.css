@@ -453,26 +453,26 @@ body.night-mode .hero-character {
     margin-top: 0; /* Убираем верхний отступ, так как Стас уже давит на него */
 }
 
-/* --- ПЛАШКА ОБ УСПЕШНОЙ ОТПРАВКЕ --- */
+/* --- ПЛАШКА ОБ УСПЕШНОЙ ОТПРАВКЕ (ЗЕЛЕНАЯ) --- */
 .success-toast {
     position: fixed;
-    bottom: -100px; /* Изначально спрятана внизу */
+    bottom: -150px; /* Изначально спрятана внизу */
     left: 50%;
     transform: translateX(-50%);
+    width: 90%;
+    max-width: 500px; /* Такая же ширина, как у остальных карточек */
     background: var(--card-bg);
-    border: 2px solid var(--neon-cyan);
-    color: var(--neon-cyan);
-    padding: 15px 30px;
-    border-radius: 50px;
+    border: 2px solid #00ff66; /* Неоновый зеленый */
+    color: #00ff66;
+    padding: 20px;
+    border-radius: 15px; /* Скругление как у карточек */
     font-weight: bold;
     font-size: 16px;
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.4), inset 0 0 10px rgba(0, 255, 255, 0.2);
+    text-align: center;
+    box-shadow: 0 0 20px rgba(0, 255, 102, 0.4), inset 0 0 15px rgba(0, 255, 102, 0.1);
     z-index: 1000;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    transition: bottom 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Пружинистый эффект */
-    pointer-events: none; /* Чтобы не мешала кликать */
+    transition: bottom 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    pointer-events: none; 
 }
 
 /* Класс, который добавляет JS для показа */
@@ -482,7 +482,7 @@ body.night-mode .hero-character {
 
 /* Ночной режим */
 body.night-mode .success-toast {
-    border-color: var(--neon-pink);
-    color: var(--neon-pink);
-    box-shadow: 0 0 20px rgba(255, 0, 255, 0.4);
+    border-color: #005522;
+    color: #005522;
+    box-shadow: none;
 }
