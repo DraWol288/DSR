@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>С Новым Годом, Стас!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="on">
+
+    <!-- Снегопад -->
+    <div id="snow-container"></div>
+
+    <!-- Гирлянда -->
+    <div class="garland-container" id="garland">
+        <div class="garland-wire"></div>
+        <div class="lights">
+            <div class="bulb"></div><div class="bulb"></div><div class="bulb"></div>
+            <div class="bulb"></div><div class="bulb"></div><div class="bulb"></div>
+            <div class="bulb"></div><div class="bulb"></div><div class="bulb"></div>
+            <div class="bulb"></div><div class="bulb"></div><div class="bulb"></div>
+        </div>
+        <div class="plug" id="plug" title="Включить/Выключить свет"></div>
+    </div>
+
+    <!-- Снежный шар (вместо стекла) -->
+    <div class="snow-globe-container" id="snowGlobe">
+        <div class="snow-globe-bg"></div>
+        <div class="snow-globe-content">
+            <h1>Стас, с Новым Годом!</h1>
+            <p>Проведи мышкой внутри шара ❄️</p>
+        </div>
+        <div class="snow-particles" id="globeParticles"></div>
+    </div>
+
+    <!-- Основной контент -->
+    <div class="content">
+        
+        <!-- Кликер -->
+        <div class="card clicker-area">
+            <h3>Накорми Оленя</h3>
+            <div class="character" id="deer">🦌</div>
+            <p>Съедено печенек: <span id="cookieCount" style="color: var(--neon-cyan); font-weight: bold;">0</span></p>
+            <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+            <p style="font-size: 13px; opacity: 0.7; margin-top: 5px;">Кликни 20 раз, чтобы получить сертификат!</p>
+            <button class="clicker-btn" id="feedBtn">Дать печеньку 🍪</button>
+        </div>
+
+        <!-- Поймай снежинку -->
+        <div class="card">
+            <h3>Поймай снежинку</h3>
+            <div class="game-info">
+                <span>Очки: <span id="score">0</span></span>
+                <span>Время: <span id="time">0</span>с</span>
+            </div>
+            <div class="catch-game" id="gameArea"></div>
+            <button class="game-btn" id="startGameBtn">Начать игру</button>
+        </div>
+
+        <!-- Предсказание -->
+        <div class="card">
+            <h3>Предсказание на год</h3>
+            <div class="prediction-box" id="predictionBox">Нажми на кнопку, чтобы узнать будущее...</div>
+            <button class="game-btn" id="predictBtn" style="border-color: var(--neon-cyan); color: var(--neon-cyan);">Узнать судьбу</button>
+        </div>
+
+        <!-- Тест -->
+        <div class="card">
+            <h3>Новогодний тест</h3>
+            <div id="quizContainer"></div>
+            <p id="quizResult" style="text-align: center; margin-top: 15px; font-weight: bold; color: var(--neon-cyan);"></p>
+        </div>
+
+        <!-- Погода в сердце -->
+        <div class="card weather-widget">
+            <h3>Погода в твоем сердце</h3>
+            <p id="weatherText">Загрузка...</p>
+        </div>
+
+        <!-- Цитатник -->
+        <div class="card">
+            <h3>Цитатник дня</h3>
+            <div class="quote-box" id="quoteBox">"Нажми на кнопку, чтобы получить мудрость"</div>
+            <button class="quote-btn" id="quoteBtn">Сгенерировать</button>
+        </div>
+
+        <!-- Чек-лист -->
+        <div class="card checklist">
+            <h3>Подготовка к НГ</h3>
+            <label><input type="checkbox" id="task1"> <span>Купить шампанское</span></label>
+            <label><input type="checkbox" id="task2"> <span>Позвонить маме</span></label>
+            <label><input type="checkbox" id="task3"> <span>Посмотреть этот сайт до конца</span></label>
+            <label><input type="checkbox" id="task4"> <span>Накормить оленя</span></label>
+            <label><input type="checkbox" id="task5"> <span>Написать автору сайта</span></label>
+        </div>
+    </div>
+
+    <!-- Личный текст -->
+    <div class="personal-text">
+        <h2>Стас, это тебе!</h2>
+        <p>Привет! Я очень рад, что мы учимся в одной группе. Этот год был насыщенным, но мы справились. Желаю тебе в новом году крутых проектов, легких сессий и море позитива!</p>
+        <p>Пусть этот сайт напомнит тебе, что даже в самые загруженные дни можно найти время на веселье. С Новым Годом!</p>
+        <p style="text-align: right; font-style: italic;">— Твой одногруппник</p>
+    </div>
+
+    <!-- Кнопка "Я дочитал" -->
+    <button class="read-more-btn" id="readMoreBtn">Я дочитал! Написать ответ</button>
+
+    <!-- Форма связи -->
+    <div class="form-section" id="formSection">
+        <h3>Напиши мне в ответ!</h3>
+        <!-- Замени ТВОЙ_ID на свой Formspree ID -->
+        <form action="https://formspree.io/f/xwllyblg" method="POST">
+            <input type="text" name="name" placeholder="Твое имя" required>
+            <textarea name="message" rows="4" placeholder="Твое сообщение..." required></textarea>
+            <button type="submit">Отправить</button>
+        </form>
+    </div>
+
+    <!-- Модалка Сертификата -->
+    <div class="modal" id="certModal">
+        <div class="modal-content">
+            <h2>Сертификат 🏆</h2>
+            <p>Настоящим подтверждается, что</p>
+            <p><strong>Стас</strong></p>
+            <p>официально признан</p>
+            <h3>"Главным кормильцем оленей 2026"</h3>
+            <p>и награждается пожизненным запасом новогоднего настроения!</p>
+            <button class="close-btn" id="closeModal">Забрать награду</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,416 @@
+:root {
+    --bg-dark: #05050a;
+    --neon-cyan: #00ffff;
+    --neon-pink: #ff00ff;
+    --neon-purple: #9d00ff;
+    --text-main: #e0f7fa;
+    --card-bg: rgba(15, 10, 30, 0.85);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%2300ffff" stroke-width="2" stroke-linecap="round"><path d="M12 2L12 22M2 12L22 12M4.93 4.93L19.07 19.07M19.07 4.93L4.93 19.07"/></svg>') 12 12, auto;
+}
+
+body {
+    font-family: 'Comfortaa', cursive;
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    transition: background-color 0.5s, color 0.5s;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding-bottom: 50px;
+    position: relative;
+}
+
+/* Снегопад */
+.snowflake {
+    position: fixed;
+    top: -10px;
+    color: var(--neon-cyan);
+    font-size: 1.5em;
+    opacity: 0.6;
+    pointer-events: none;
+    z-index: 1;
+    animation: fall linear infinite;
+}
+@keyframes fall {
+    to { transform: translateY(100vh); }
+}
+
+body.night-mode {
+    background-color: #000000;
+    --text-main: #445566;
+    --neon-cyan: #004455;
+    --neon-pink: #550055;
+    --neon-purple: #330055;
+}
+
+/* Гирлянда */
+.garland-container {
+    width: 100%;
+    max-width: 600px;
+    height: 80px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 15px;
+    z-index: 10;
+}
+.garland-wire {
+    position: absolute;
+    top: 25px;
+    width: 100%;
+    height: 2px;
+    background-color: #222;
+}
+.lights { display: flex; gap: 15px; }
+.bulb {
+    width: 12px; height: 22px;
+    border-radius: 50% 50% 5px 5px;
+    background-color: #111;
+    transition: all 0.3s;
+    animation: blink 1.5s infinite alternate;
+}
+.bulb:nth-child(odd) { animation-delay: 0.2s; }
+.bulb:nth-child(even) { animation-delay: 0.5s; }
+.bulb:nth-child(3n) { animation-delay: 0.8s; }
+@keyframes blink { 0% { opacity: 0.3; } 100% { opacity: 1; } }
+
+.on .bulb:nth-child(odd) { background-color: var(--neon-pink); box-shadow: 0 0 15px var(--neon-pink), 0 0 30px var(--neon-pink); }
+.on .bulb:nth-child(even) { background-color: var(--neon-cyan); box-shadow: 0 0 15px var(--neon-cyan), 0 0 30px var(--neon-cyan); }
+.on .bulb:nth-child(3n) { background-color: var(--neon-purple); box-shadow: 0 0 15px var(--neon-purple), 0 0 30px var(--neon-purple); }
+
+.plug {
+    position: absolute;
+    right: 20px; top: 15px;
+    width: 22px; height: 35px;
+    background: var(--neon-cyan);
+    border: 2px solid var(--bg-dark);
+    border-radius: 5px;
+    cursor: pointer;
+    box-shadow: 0 0 10px var(--neon-cyan);
+    transition: 0.3s;
+    z-index: 11;
+}
+body.night-mode .plug { background: #222; box-shadow: none; }
+
+/* --- СНЕЖНЫЙ ШАР (замена стекла) --- */
+.snow-globe-container {
+    position: relative;
+    width: 90%;
+    max-width: 500px;
+    height: 400px;
+    margin: 30px 0;
+    border-radius: 50% / 40% 40% 60% 60%; /* Форма шара */
+    border: 4px solid var(--neon-purple);
+    overflow: hidden;
+    box-shadow: 0 0 30px rgba(157, 0, 255, 0.6), inset 0 0 50px rgba(0, 255, 255, 0.2);
+    z-index: 2;
+    background: #000;
+}
+
+.snow-globe-bg {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: url('https://images.unsplash.com/photo-1542281827-53749c296e22?q=80&w=800&auto=format&fit=crop') center/cover;
+    filter: brightness(0.5) contrast(1.3) hue-rotate(20deg);
+    animation: slowPan 20s infinite alternate linear;
+}
+@keyframes slowPan {
+    0% { transform: scale(1) translateX(0); }
+    100% { transform: scale(1.1) translateX(-10px); }
+}
+
+.snow-globe-content {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    text-align: center;
+    z-index: 3;
+    pointer-events: none;
+}
+.snow-globe-content h1 {
+    font-size: 26px;
+    color: var(--neon-cyan);
+    text-shadow: 0 0 15px var(--neon-cyan);
+    margin-bottom: 10px;
+}
+.snow-globe-content p {
+    font-size: 14px;
+    color: #fff;
+    opacity: 0.8;
+}
+
+.snow-particles {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: 2;
+    pointer-events: none; /* Чтобы шар не мешал кликам */
+    overflow: hidden;
+}
+
+/* Частицы снега внутри шара */
+.globe-flake {
+    position: absolute;
+    color: var(--neon-cyan);
+    font-size: 14px;
+    opacity: 0.8;
+    text-shadow: 0 0 8px var(--neon-cyan);
+    transition: transform 0.1s ease-out;
+}
+
+body.night-mode .snow-globe-container { border-color: #222; box-shadow: none; }
+body.night-mode .snow-globe-content h1 { color: #444; text-shadow: none; }
+
+/* Контент */
+.content {
+    width: 90%;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    z-index: 2;
+}
+.card {
+    background: var(--card-bg);
+    border: 2px solid var(--neon-cyan);
+    border-radius: 15px;
+    padding: 25px 20px;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.15);
+    transition: all 0.3s;
+}
+body.night-mode .card { border-color: #222; box-shadow: none; }
+.card h3 {
+    margin-bottom: 20px;
+    color: var(--neon-pink);
+    font-size: 20px;
+    text-align: center;
+    text-shadow: 0 0 8px var(--neon-pink);
+}
+body.night-mode .card h3 { color: #444; text-shadow: none; }
+
+/* Кликер */
+.clicker-area { text-align: center; }
+.character {
+    font-size: 80px;
+    user-select: none;
+    transition: transform 0.1s;
+    filter: drop-shadow(0 0 15px var(--neon-cyan));
+}
+.character:active { transform: scale(1.15); }
+.progress-bar {
+    width: 100%; height: 10px;
+    background: #222;
+    border-radius: 5px;
+    margin: 15px 0;
+    overflow: hidden;
+}
+.progress-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--neon-cyan);
+    box-shadow: 0 0 10px var(--neon-cyan);
+    transition: width 0.3s;
+}
+.clicker-btn {
+    padding: 12px 25px;
+    border-radius: 8px;
+    border: 2px solid var(--neon-cyan);
+    background: transparent;
+    color: var(--neon-cyan);
+    font-weight: bold;
+    font-family: inherit;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: 0.3s;
+    text-shadow: 0 0 5px var(--neon-cyan);
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+}
+.clicker-btn:hover { background: var(--neon-cyan); color: var(--bg-dark); box-shadow: 0 0 20px var(--neon-cyan); text-shadow: none; }
+
+/* Игра */
+.catch-game {
+    position: relative;
+    height: 200px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px dashed var(--neon-purple);
+}
+.catch-snowflake {
+    position: absolute;
+    font-size: 30px;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.1s;
+    filter: drop-shadow(0 0 10px var(--neon-cyan));
+}
+.catch-snowflake:active { transform: scale(0.8); }
+.game-info { display: flex; justify-content: space-between; margin-bottom: 10px; font-weight: bold; }
+.game-btn {
+    width: 100%; padding: 10px;
+    background: transparent;
+    border: 2px solid var(--neon-purple);
+    color: var(--neon-purple);
+    border-radius: 8px;
+    font-family: inherit;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+}
+.game-btn:hover { background: var(--neon-purple); color: #000; }
+
+/* Предсказание */
+.prediction-box {
+    text-align: center;
+    font-size: 18px;
+    min-height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--neon-cyan);
+    text-shadow: 0 0 10px var(--neon-cyan);
+    margin-bottom: 15px;
+}
+
+/* Тест */
+.quiz-question { margin-bottom: 15px; }
+.quiz-question p { margin-bottom: 8px; font-weight: bold; }
+.quiz-option {
+    display: block;
+    padding: 8px;
+    margin-bottom: 5px;
+    border: 1px solid var(--neon-purple);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.quiz-option:hover { background: rgba(157, 0, 255, 0.3); }
+.quiz-option.correct { background: rgba(0, 255, 0, 0.3); border-color: #0f0; }
+.quiz-option.wrong { background: rgba(255, 0, 0, 0.3); border-color: #f00; }
+
+/* Погода */
+.weather-widget { text-align: center; line-height: 1.8; font-size: 16px; }
+.weather-widget span { color: var(--neon-pink); font-weight: bold; }
+
+/* Цитаты */
+.quote-box { text-align: center; font-style: italic; min-height: 80px; display: flex; align-items: center; justify-content: center; font-size: 15px; color: #ccc; margin-bottom: 15px; }
+.quote-btn { display: block; width: 100%; padding: 12px; background: transparent; border: 2px solid var(--neon-purple); color: var(--neon-purple); border-radius: 8px; font-family: inherit; font-weight: bold; cursor: pointer; transition: 0.3s; }
+.quote-btn:hover { background: var(--neon-purple); color: var(--bg-dark); }
+
+/* Чек-лист */
+.checklist { display: flex; flex-direction: column; gap: 15px; }
+.checklist label { display: flex; align-items: center; font-size: 16px; cursor: pointer; }
+.checklist input[type="checkbox"] { margin-right: 15px; cursor: pointer; width: 20px; height: 20px; accent-color: var(--neon-cyan); }
+.checklist input:checked + span { text-decoration: line-through; opacity: 0.4; color: var(--neon-cyan); }
+
+/* Личный текст и Форма */
+.personal-text {
+    width: 90%;
+    max-width: 500px;
+    margin-top: 40px;
+    padding: 30px 20px;
+    background: var(--card-bg);
+    border: 2px solid var(--neon-pink);
+    border-radius: 15px;
+    box-shadow: 0 0 30px rgba(255, 0, 255, 0.2);
+    text-align: center;
+    z-index: 2;
+}
+.personal-text h2 { color: var(--neon-pink); margin-bottom: 20px; text-shadow: 0 0 10px var(--neon-pink); }
+.personal-text p { font-size: 16px; line-height: 1.6; margin-bottom: 15px; text-align: left; }
+
+.form-section {
+    width: 90%;
+    max-width: 500px;
+    margin-top: 30px;
+    background: var(--card-bg);
+    border: 2px solid var(--neon-cyan);
+    border-radius: 15px;
+    padding: 25px 20px;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.15);
+    display: none;
+    z-index: 2;
+}
+.form-section h3 { color: var(--neon-cyan); margin-bottom: 20px; text-align: center; text-shadow: 0 0 8px var(--neon-cyan); }
+.form-section input, .form-section textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: 1px solid var(--neon-cyan);
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    font-family: inherit;
+    outline: none;
+}
+.form-section button {
+    width: 100%; padding: 15px;
+    background: transparent;
+    border: 2px solid var(--neon-cyan);
+    color: var(--neon-cyan);
+    border-radius: 8px;
+    font-weight: bold;
+    font-family: inherit;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.form-section button:hover { background: var(--neon-cyan); color: var(--bg-dark); }
+
+.read-more-btn {
+    width: 90%;
+    max-width: 500px;
+    margin-top: 20px;
+    padding: 15px;
+    background: transparent;
+    border: 2px solid var(--neon-pink);
+    color: var(--neon-pink);
+    border-radius: 8px;
+    font-weight: bold;
+    font-family: inherit;
+    font-size: 18px;
+    cursor: pointer;
+    transition: 0.3s;
+    text-shadow: 0 0 5px var(--neon-pink);
+    box-shadow: 0 0 10px rgba(255, 0, 255, 0.2);
+    z-index: 2;
+}
+.read-more-btn:hover { background: var(--neon-pink); color: var(--bg-dark); text-shadow: none; box-shadow: 0 0 20px var(--neon-pink); }
+
+/* Модалка */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.9);
+    z-index: 100;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(5px);
+}
+.modal-content {
+    background: #0a0515;
+    color: var(--text-main);
+    padding: 40px 30px;
+    border-radius: 20px;
+    text-align: center;
+    border: 3px solid var(--neon-cyan);
+    max-width: 400px;
+    box-shadow: 0 0 40px rgba(0, 255, 255, 0.3);
+}
+.modal-content h2 { margin-bottom: 20px; font-size: 26px; color: var(--neon-pink); text-shadow: 0 0 10px var(--neon-pink); }
+.modal-content p { margin-bottom: 10px; font-size: 16px; }
+.modal-content strong { color: var(--neon-cyan); font-size: 22px; text-shadow: 0 0 8px var(--neon-cyan); }
+.modal-content h3 { margin: 15px 0; color: #fff; text-shadow: 0 0 15px #fff; }
+.close-btn { margin-top: 25px; padding: 12px 25px; background: transparent; color: var(--neon-cyan); border: 2px solid var(--neon-cyan); border-radius: 8px; cursor: pointer; font-family: inherit; font-weight: bold; transition: 0.3s; }
+.close-btn:hover { background: var(--neon-cyan); color: #000; box-shadow: 0 0 20px var(--neon-cyan); }
