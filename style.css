@@ -420,8 +420,8 @@ body.night-mode .card h3 { color: #444; text-shadow: none; }
     position: relative;
     width: 90%;
     max-width: 100px; /* Ограничиваем ширину, чтобы он не был гигантским */
-    margin-top: -20px; /* Чуть поднимаем к гирлянде */
-    margin-bottom: -40px; /* Опускаем на шар */
+    margin-top: 10px; /* Чуть поднимаем к гирлянде */
+    margin-bottom: 40px; /* Опускаем на шар */
     z-index: 5; /* Поверх снежного шара */
     display: flex;
     justify-content: center;
