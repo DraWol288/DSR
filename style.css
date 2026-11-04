@@ -415,37 +415,40 @@ body.night-mode .card h3 { color: #444; text-shadow: none; }
 .close-btn { margin-top: 25px; padding: 12px 25px; background: transparent; color: var(--neon-cyan); border: 2px solid var(--neon-cyan); border-radius: 8px; cursor: pointer; font-family: inherit; font-weight: bold; transition: 0.3s; }
 .close-btn:hover { background: var(--neon-cyan); color: #000; box-shadow: 0 0 20px var(--neon-cyan); }
 
-/* Стили для персонажа внутри шара */
-.globe-character {
-    position: absolute;
-    bottom: 0; /* Прижимаем к низу */
-    left: 50%;
-    transform: translateX(-50%); /* Центрируем по горизонтали */
-    height: 85%; /* Занимает 85% высоты шара */
-    max-height: 340px;
-    z-index: 4; /* Поверх фона, но под частицами (или над, смотри ниже) */
-    pointer-events: none; /* Чтобы не мешал кликам мыши */
-    
-    /* Неоновое свечение вокруг персонажа */
-    filter: drop-shadow(0 0 15px rgba(0, 255, 255, 0.6)) 
-            drop-shadow(0 0 30px rgba(157, 0, 255, 0.4));
-            
-    /* Плавное покачивание */
-    animation: floatCharacter 4s ease-in-out infinite;
+/* --- СТАС ГЛАВНЫЙ ГЕРОЙ --- */
+.hero-character-container {
+    position: relative;
+    width: 90%;
+    max-width: 300px; /* Ограничиваем ширину, чтобы он не был гигантским */
+    margin-top: -20px; /* Чуть поднимаем к гирлянде */
+    margin-bottom: -40px; /* Опускаем на шар */
+    z-index: 5; /* Поверх снежного шара */
+    display: flex;
+    justify-content: center;
 }
 
-/* Анимация парения */
-@keyframes floatCharacter {
-    0%, 100% { transform: translateX(-50%) translateY(0); }
-    50% { transform: translateX(-50%) translateY(-10px); }
+.hero-character {
+    width: 100%;
+    height: auto;
+    /* Неоновое свечение вокруг Стаса */
+    filter: drop-shadow(0 0 15px rgba(0, 255, 255, 0.7)) 
+            drop-shadow(0 0 35px rgba(157, 0, 255, 0.5));
+    /* Плавное парение */
+    animation: floatStas 4s ease-in-out infinite;
+    pointer-events: none; /* Чтобы не мешал кликам */
 }
 
-/* Немного сдвигаем текст, чтобы он не перекрывал лицо Стаса */
-.snow-globe-content {
-    top: 35%; /* Поднимаем текст выше */
+@keyframes floatStas {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
 }
 
-/* В ночном режиме персонаж становится чуть темнее */
-body.night-mode .globe-character {
-    filter: brightness(0.5) drop-shadow(0 0 0 transparent);
+/* В ночном режиме Стас становится темнее */
+body.night-mode .hero-character {
+    filter: brightness(0.4) drop-shadow(0 0 0 transparent);
+}
+
+/* Корректируем шар, так как Стас теперь стоит перед ним */
+.snow-globe-container {
+    margin-top: 0; /* Убираем верхний отступ, так как Стас уже давит на него */
 }
