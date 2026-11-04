@@ -452,3 +452,37 @@ body.night-mode .hero-character {
 .snow-globe-container {
     margin-top: 0; /* Убираем верхний отступ, так как Стас уже давит на него */
 }
+
+/* --- ПЛАШКА ОБ УСПЕШНОЙ ОТПРАВКЕ --- */
+.success-toast {
+    position: fixed;
+    bottom: -100px; /* Изначально спрятана внизу */
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--card-bg);
+    border: 2px solid var(--neon-cyan);
+    color: var(--neon-cyan);
+    padding: 15px 30px;
+    border-radius: 50px;
+    font-weight: bold;
+    font-size: 16px;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.4), inset 0 0 10px rgba(0, 255, 255, 0.2);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: bottom 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Пружинистый эффект */
+    pointer-events: none; /* Чтобы не мешала кликать */
+}
+
+/* Класс, который добавляет JS для показа */
+.success-toast.show {
+    bottom: 30px; /* Всплывает вверх */
+}
+
+/* Ночной режим */
+body.night-mode .success-toast {
+    border-color: var(--neon-pink);
+    color: var(--neon-pink);
+    box-shadow: 0 0 20px rgba(255, 0, 255, 0.4);
+}
