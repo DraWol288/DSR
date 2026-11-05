@@ -28,7 +28,7 @@ let particles = [];
 
 // Создаем начальные частицы
 function initParticles() {
-    for (let i = 0; i < 25; i++) {
+    for (let i = 0; i < 40; i++) {
         const flake = document.createElement('div');
         flake.classList.add('globe-flake');
         flake.innerHTML = '❅';
