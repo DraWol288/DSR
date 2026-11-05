@@ -327,21 +327,31 @@ document.getElementById('readMoreBtn').addEventListener('click', function() {
 const contactForm = document.getElementById('contactForm');
 const successToast = document.getElementById('successToast');
 const submitBtn = document.getElementById('submitBtn');
+const userNameInput = document.getElementById('userName');
+const userMessageInput = document.getElementById('userMessage');
 
 contactForm.addEventListener('submit', function(e) {
-    e.preventDefault(); // Отменяем стандартную отправку (перезагрузку)
+    e.preventDefault(); // Отменяем стандартную отправку
 
-    // Меняем текст кнопки, чтобы показать, что идет процесс
+    // ПРИНУДИТЕЛЬНАЯ ПРОВЕРКА НА ПУСТОТУ
+    const nameValue = userNameInput.value.trim();
+    const messageValue = userMessageInput.value.trim();
+
+    if (nameValue === '' || messageValue === '') {
+        alert('Пожалуйста, заполни оба поля: и имя, и сообщение!');
+        return; // Останавливаем выполнение, ничего не отправляем
+    }
+
+    // Меняем текст кнопки
     const originalBtnText = submitBtn.innerText;
     submitBtn.innerText = 'Отправка...';
     submitBtn.disabled = true;
 
-    // Собираем данные из формы
+    // Собираем данные
     const formData = new FormData(contactForm);
 
     // Отправляем на Formspree
-    // ВАЖНО: Замени xwllyblg на свой ID, если он другой!
-    fetch('https://formspree.io/f/xwllyblg', {
+    fetch('https://formspree.io/f/xwllyblg', { // Твой ID
         method: 'POST',
         body: formData,
         headers: {
@@ -350,25 +360,20 @@ contactForm.addEventListener('submit', function(e) {
     })
     .then(response => {
         if (response.ok) {
-            // Успех!
-            contactForm.reset(); // Очищаем поля
-            successToast.classList.add('show'); // Показываем плашку
+            contactForm.reset(); 
+            successToast.classList.add('show'); 
 
-            // Скрываем плашку через 4 секунды
             setTimeout(() => {
                 successToast.classList.remove('show');
             }, 4000);
         } else {
-            // Ошибка на стороне сервера
             alert('Ой, что-то пошло не так. Попробуй еще раз!');
         }
     })
     .catch(error => {
-        // Ошибка сети (например, нет интернета)
         alert('Ошибка сети. Проверь подключение к интернету.');
     })
     .finally(() => {
-        // Возвращаем кнопку в исходное состояние
         submitBtn.innerText = originalBtnText;
         submitBtn.disabled = false;
     });
