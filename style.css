@@ -486,3 +486,157 @@ body.night-mode .success-toast {
     color: #005522;
     box-shadow: none;
 }
+
+/* --- ПК ВЕРСИЯ (БОКОВЫЕ ПАНЕЛИ) --- */
+/* По умолчанию (на телефонах) панели скрыты, а layout - колонка */
+.main-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.side-panel {
+    display: none; /* Скрыто на мобилках */
+}
+
+/* Когда экран шире 1024px (ПК, ноутбуки) */
+@media (min-width: 1024px) {
+    .main-layout {
+        display: grid;
+        grid-template-columns: 250px 500px 250px; /* Левая, Центр, Правая */
+        gap: 30px;
+        justify-content: center;
+        align-items: start;
+        width: 100%;
+        max-width: 1100px; /* Ограничиваем общую ширину */
+        margin-top: 20px;
+    }
+
+    .side-panel {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        position: sticky; /* Панели будут прилипать при скролле */
+        top: 20px;
+    }
+
+    .content {
+        width: 100%; /* Центр занимает свою колонку */
+        max-width: 100%;
+        margin: 0;
+    }
+
+    /* Стили для боковых карточек */
+    .side-card {
+        padding: 20px 15px;
+    }
+    .side-card h3 {
+        font-size: 16px;
+        margin-bottom: 15px;
+    }
+
+    /* Статистика */
+    .stat-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 13px;
+        margin-bottom: 10px;
+        border-bottom: 1px dashed rgba(0, 255, 255, 0.2);
+        padding-bottom: 5px;
+    }
+    .stat-row strong {
+        color: var(--neon-cyan);
+        text-shadow: 0 0 5px var(--neon-cyan);
+    }
+
+    /* Радар */
+    .radar {
+        position: relative;
+        width: 120px;
+        height: 120px;
+        margin: 0 auto;
+        border: 2px solid var(--neon-purple);
+        border-radius: 50%;
+        background: rgba(157, 0, 255, 0.1);
+        overflow: hidden;
+        box-shadow: 0 0 15px rgba(157, 0, 255, 0.3);
+    }
+    /* Круглые линии внутри радара */
+    .radar::before, .radar::after {
+        content: '';
+        position: absolute;
+        border: 1px solid rgba(157, 0, 255, 0.3);
+        border-radius: 50%;
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    .radar::before { width: 80px; height: 80px; }
+    .radar::after { width: 40px; height: 40px; }
+
+    /* Луч радара */
+    .radar-sweep {
+        position: absolute;
+        top: 50%; left: 50%;
+        width: 50%; height: 50%;
+        background: conic-gradient(from 0deg, transparent 0deg, var(--neon-cyan) 360deg);
+        transform-origin: 0 0;
+        animation: sweep 3s linear infinite;
+        opacity: 0.6;
+    }
+    @keyframes sweep {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+
+    /* Точки на радаре */
+    .radar-dot {
+        position: absolute;
+        width: 6px; height: 6px;
+        background: var(--neon-pink);
+        border-radius: 50%;
+        box-shadow: 0 0 10px var(--neon-pink);
+        animation: blinkDot 2s infinite alternate;
+    }
+    .dot1 { top: 30%; left: 60%; animation-delay: 0.5s; }
+    .dot2 { top: 70%; left: 40%; animation-delay: 1.2s; }
+    .dot3 { top: 50%; left: 80%; animation-delay: 1.8s; }
+    @keyframes blinkDot {
+        0% { opacity: 0.2; transform: scale(0.8); }
+        100% { opacity: 1; transform: scale(1.2); }
+    }
+
+    /* Чек-лист на ПК */
+    .pc-checklist {
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+        margin-bottom: 10px;
+        cursor: pointer;
+    }
+    .pc-checklist input {
+        margin-right: 10px;
+        accent-color: var(--neon-pink);
+    }
+
+    /* Статичная цитата */
+    .static-quote {
+        font-style: italic;
+        font-size: 14px;
+        text-align: center;
+        line-height: 1.5;
+        color: #ddd;
+    }
+
+    /* Снеговик */
+    .pc-snowman {
+        font-size: 50px;
+        cursor: pointer;
+        user-select: none;
+        transition: transform 0.2s;
+        filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+    }
+    .pc-snowman:active {
+        transform: scale(0.9) rotate(10deg);
+    }
+}
