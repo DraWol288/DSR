@@ -47,10 +47,31 @@
             <div class="card side-card">
                 <h3>Статистика Стаса</h3>
                 <div class="stat-row"><span>Уровень новогоднего духа:</span> <strong>99%</strong></div>
-                <div class="stat-row"><span>Съедено оливье (прогноз):</span> <strong>4.5 кг</strong></div>
+                <div class="stat-row"><span>Съедено оливье:</span> <strong>4.5 кг</strong></div>
                 <div class="stat-row"><span>Готовность к сессии:</span> <strong>12%</strong></div>
                 <div class="stat-row"><span>Подарков под елкой:</span> <strong id="pcGiftsCount">0</strong></div>
             </div>
+            
+            <!-- НОВЫЙ ВИДЖЕТ: Таймер -->
+            <div class="card side-card">
+                <h3>До Нового Года</h3>
+                <div class="timer-container" id="newYearTimer">
+                    <div class="timer-block"><span class="timer-num" id="days">00</span><span class="timer-label">дней</span></div>
+                    <div class="timer-block"><span class="timer-num" id="hours">00</span><span class="timer-label">часов</span></div>
+                    <div class="timer-block"><span class="timer-num" id="minutes">00</span><span class="timer-label">минут</span></div>
+                    <div class="timer-block"><span class="timer-num" id="seconds">00</span><span class="timer-label">секунд</span></div>
+                </div>
+            </div>
+
+            <!-- НОВЫЙ ВИДЖЕТ: Снежный ком -->
+            <div class="card side-card">
+                <h3>Снежный ком</h3>
+                <div class="snowball-container">
+                    <div class="snowball" id="snowball"></div>
+                </div>
+                <p style="text-align: center; font-size: 13px; opacity: 0.7;">Кликай, чтобы налепить ком!</p>
+            </div>
+
             <div class="card side-card">
                 <h3>Новогодний радар</h3>
                 <div class="radar">
@@ -125,7 +146,7 @@
         </div>
     </div>
 
-        <!-- ПРАВАЯ ПАНЕЛЬ (Только для ПК) -->
+         <!-- ПРАВАЯ ПАНЕЛЬ (Только для ПК) -->
         <aside class="side-panel right-panel">
             <div class="card side-card">
                 <h3>Маленькие радости</h3>
@@ -134,21 +155,42 @@
                 <label class="pc-checklist"><input type="checkbox"> <span>Снег за окном</span></label>
                 <label class="pc-checklist"><input type="checkbox"> <span>Письмо от Деда Мороза</span></label>
             </div>
+
+            <!-- НОВЫЙ ВИДЖЕТ: Ёлочный шар -->
+            <div class="card side-card">
+                <h3>Ёлочный шар</h3>
+                <div class="bauble-container">
+                    <div class="bauble" id="bauble"></div>
+                </div>
+                <p style="text-align: center; font-size: 13px; opacity: 0.7; margin-top: 10px;">Нажми, чтобы раскрутить</p>
+            </div>
+
+            <!-- НОВЫЙ ВИДЖЕТ: Рецепт оливье -->
+            <div class="card side-card">
+                <h3>Рецепт оливье</h3>
+                <div class="recipe-list" id="recipeList">
+                    <div class="recipe-item"><span class="recipe-icon">🥔</span> Картошка</div>
+                    <div class="recipe-item"><span class="recipe-icon">🥕</span> Морковка</div>
+                    <div class="recipe-item"><span class="recipe-icon">🥚</span> Яйца</div>
+                    <div class="recipe-item"><span class="recipe-icon">🥒</span> Огурцы</div>
+                    <div class="recipe-item"><span class="recipe-icon">🌭</span> Колбаса</div>
+                    <div class="recipe-item"><span class="recipe-icon">🫛</span> Горошек</div>
+                </div>
+            </div>
+
             <div class="card side-card">
                 <h3>Цитата года</h3>
                 <div class="static-quote">
                     «В новом году я обещаю... <br>начать делать домашку вовремя. <br><br><span style="color: var(--neon-pink); font-size: 14px;">(Шутка. Наверное.)</span>»
                 </div>
             </div>
+            
             <div class="card side-card" style="text-align: center;">
                 <h3>Бонус</h3>
-                <p style="font-size: 14px; margin-bottom: 10px;">Нажми на снеговика!</p>
                 <div class="pc-snowman" id="pcSnowman">⛄</div>
-                <p id="pcSnowmanText" style="font-size: 12px; color: var(--neon-cyan); min-height: 20px;"></p>
+                <p id="pcSnowmanText" style="font-size: 12px; color: var(--neon-cyan); min-height: 20px; margin-top: 10px;"></p>
             </div>
         </aside>
-
-    </div>
     <!-- КОНЕЦ ОБЕРТКИ -->
 
     <!-- Личный текст -->
