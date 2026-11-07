@@ -39,6 +39,30 @@
         <div class="snow-particles" id="globeParticles"></div>
     </div>
 
+    <!-- ОБЕРТКА ДЛЯ ПК-СЕТКИ -->
+    <div class="main-layout">
+        
+        <!-- ЛЕВАЯ ПАНЕЛЬ (Только для ПК) -->
+        <aside class="side-panel left-panel">
+            <div class="card side-card">
+                <h3>Статистика Стаса</h3>
+                <div class="stat-row"><span>Уровень новогоднего духа:</span> <strong>99%</strong></div>
+                <div class="stat-row"><span>Съедено оливье (прогноз):</span> <strong>4.5 кг</strong></div>
+                <div class="stat-row"><span>Готовность к сессии:</span> <strong>12%</strong></div>
+                <div class="stat-row"><span>Подарков под елкой:</span> <strong id="pcGiftsCount">0</strong></div>
+            </div>
+            <div class="card side-card">
+                <h3>Новогодний радар</h3>
+                <div class="radar">
+                    <div class="radar-sweep"></div>
+                    <div class="radar-dot dot1"></div>
+                    <div class="radar-dot dot2"></div>
+                    <div class="radar-dot dot3"></div>
+                </div>
+                <p style="text-align: center; font-size: 12px; margin-top: 10px; opacity: 0.7;">Поиск Деда Мороза...</p>
+            </div>
+        </aside>
+
     <!-- Основной контент -->
     <div class="content">
         
@@ -100,6 +124,32 @@
             <label><input type="checkbox" id="task5"> <span>Написать автору сайта</span></label>
         </div>
     </div>
+
+        <!-- ПРАВАЯ ПАНЕЛЬ (Только для ПК) -->
+        <aside class="side-panel right-panel">
+            <div class="card side-card">
+                <h3>Маленькие радости</h3>
+                <label class="pc-checklist"><input type="checkbox" checked> <span>Мандаринки</span></label>
+                <label class="pc-checklist"><input type="checkbox" checked> <span>Запах елки</span></label>
+                <label class="pc-checklist"><input type="checkbox"> <span>Снег за окном</span></label>
+                <label class="pc-checklist"><input type="checkbox"> <span>Письмо от Деда Мороза</span></label>
+            </div>
+            <div class="card side-card">
+                <h3>Цитата года</h3>
+                <div class="static-quote">
+                    «В новом году я обещаю... <br>начать делать домашку вовремя. <br><br><span style="color: var(--neon-pink); font-size: 14px;">(Шутка. Наверное.)</span>»
+                </div>
+            </div>
+            <div class="card side-card" style="text-align: center;">
+                <h3>Бонус</h3>
+                <p style="font-size: 14px; margin-bottom: 10px;">Нажми на снеговика!</p>
+                <div class="pc-snowman" id="pcSnowman">⛄</div>
+                <p id="pcSnowmanText" style="font-size: 12px; color: var(--neon-cyan); min-height: 20px;"></p>
+            </div>
+        </aside>
+
+    </div>
+    <!-- КОНЕЦ ОБЕРТКИ -->
 
     <!-- Личный текст -->
     <div class="personal-text">
