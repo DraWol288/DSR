@@ -390,3 +390,36 @@ contactForm.addEventListener('submit', function(e) {
         submitBtn.disabled = false;
     });
 });
+
+// 13. Бонусы для ПК (работают только если элементы есть на странице)
+// Счетчик подарков (просто для красоты, рандомно увеличивается)
+const pcGiftsCount = document.getElementById('pcGiftsCount');
+if (pcGiftsCount) {
+    setInterval(() => {
+        let current = parseInt(pcGiftsCount.innerText);
+        if (current < 99) {
+            pcGiftsCount.innerText = current + 1;
+        }
+    }, 3000);
+}
+
+// Снеговик
+const pcSnowman = document.getElementById('pcSnowman');
+const pcSnowmanText = document.getElementById('pcSnowmanText');
+const snowmanPhrases = [
+    "Ой! Щекотно!",
+    "Еще разок!",
+    "Я растаял... шучу!",
+    "С Новым Годом!",
+    "Ты лучший!",
+    "Хочешь морковку?"
+];
+if (pcSnowman) {
+    pcSnowman.addEventListener('click', () => {
+        pcSnowmanText.innerText = snowmanPhrases[Math.floor(Math.random() * snowmanPhrases.length)];
+        pcSnowman.style.transform = 'scale(1.2) rotate(-10deg)';
+        setTimeout(() => {
+            pcSnowman.style.transform = 'scale(1) rotate(0deg)';
+        }, 200);
+    });
+}
