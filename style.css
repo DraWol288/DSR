@@ -679,3 +679,25 @@ body.night-mode .success-toast {
         font-size: 18px;
     }
 }
+
+/* Переопределяем стили для элементов внутри сетки */
+.personal-text {
+    width: 100%; /* Занимает всю ширину центральной колонки */
+    max-width: 100%;
+    margin-top: 20px;
+    margin-bottom: 0;
+}
+
+.read-more-btn {
+    width: 100%;
+    max-width: 100%;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.form-section {
+    width: 100%;
+    max-width: 100%;
+    margin-top: 0;
+    margin-bottom: 40px; /* Отступ снизу, чтобы не прилипало к краю экрана */
+}
