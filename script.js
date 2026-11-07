@@ -423,3 +423,92 @@ if (pcSnowman) {
         }, 200);
     });
 }
+
+// --- ЛОГИКА ДЛЯ НОВЫХ ПК-ВИДЖЕТОВ ---
+
+// 1. Таймер до Нового Года
+function updateTimer() {
+    const timerEl = document.getElementById('newYearTimer');
+    if (!timerEl) return; // Если мы на телефоне, ничего не делаем
+
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    // Устанавливаем дату на 1 января следующего года (00:00:00)
+    let nextYear = new Date(currentYear + 1, 0, 1);
+    
+    // Если мы уже в новом году (например, сейчас январь), берем следующий год
+    if (now.getMonth() === 0 && now.getDate() === 1) {
+        // Если сегодня 1 января, можно показывать, что Новый Год наступил
+        // Но для теста оставим логику до следующего
+    }
+
+    const diff = nextYear - now;
+
+    if (diff <= 0) {
+        document.getElementById('days').innerText = '00';
+        document.getElementById('hours').innerText = '00';
+        document.getElementById('minutes').innerText = '00';
+        document.getElementById('seconds').innerText = '00';
+        return;
+    }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((diff / 1000 / 60) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
+
+    document.getElementById('days').innerText = days < 10 ? '0' + days : days;
+    document.getElementById('hours').innerText = hours < 10 ? '0' + hours : hours;
+    document.getElementById('minutes').innerText = minutes < 10 ? '0' + minutes : minutes;
+    document.getElementById('seconds').innerText = seconds < 10 ? '0' + seconds : seconds;
+}
+
+// Запускаем таймер, если элемент существует
+if (document.getElementById('newYearTimer')) {
+    updateTimer();
+    setInterval(updateTimer, 1000);
+}
+
+// 2. Снежный ком
+const snowball = document.getElementById('snowball');
+let snowballSize = 50;
+if (snowball) {
+    snowball.addEventListener('click', () => {
+        snowballSize += 5;
+        if (snowballSize > 110) {
+            snowballSize = 50; // Сбрасываем, если стал слишком большим
+            snowball.style.background = '#fff';
+        }
+        snowball.style.width = snowballSize + 'px';
+        snowball.style.height = snowballSize + 'px';
+        
+        // Меняем цвет на голубоватый по мере роста
+        if (snowballSize > 80) {
+            snowball.style.background = '#ccffff';
+        }
+    });
+}
+
+// 3. Ёлочный шар
+const bauble = document.getElementById('bauble');
+if (bauble) {
+    bauble.addEventListener('click', () => {
+        bauble.classList.add('spin');
+        // Меняем цвет неона случайным образом
+        const colors = ['var(--neon-pink)', 'var(--neon-cyan)', 'var(--neon-purple)'];
+        const randomColor = colors[Math.floor(Math.random() * colors.length)];
+        bauble.style.boxShadow = `0 0 40px ${randomColor}`;
+        
+        setTimeout(() => {
+            bauble.classList.remove('spin');
+        }, 1000);
+    });
+}
+
+// 4. Рецепт оливье (вычеркивание)
+const recipeItems = document.querySelectorAll('.recipe-item');
+recipeItems.forEach(item => {
+    item.addEventListener('click', () => {
+        item.classList.toggle('bought');
+    });
+});
