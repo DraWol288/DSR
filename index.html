@@ -12,8 +12,19 @@
     <!-- Снегопад -->
     <div id="snow-container"></div>
 
+    <!-- Параллакс-звёзды -->
+<div class="stars-layer" id="starsLayer"></div>
+
+<!-- Курсор-частицы при клике -->
+<div id="clickParticles"></div>
+
     <!-- Гирлянда -->
     <div class="garland-container" id="garland">
+        <!-- Панель управления атмосферой -->
+<div class="atmosphere-controls">
+    <button class="atm-btn" id="stormBtn" title="Снежная буря">🌪️</button>
+    <button class="atm-btn" id="muteBtn" title="Звук вкл/выкл">🔊</button>
+</div>
         <div class="garland-wire"></div>
         <div class="lights">
             <div class="bulb"></div><div class="bulb"></div><div class="bulb"></div>
@@ -164,6 +175,20 @@
                 </form>
             </div>
 
+            <!-- Генератор новогоднего имени -->
+<div class="card">
+    <h3>Генератор новогоднего имени</h3>
+    <div class="name-gen-box" id="nameGenBox">Стас</div>
+    <button class="game-btn" id="nameGenBtn" style="border-color: var(--neon-pink); color: var(--neon-pink);">Сгенерировать имя 🎁</button>
+</div>
+
+<!-- Кто ты из новогодних персонажей -->
+<div class="card">
+    <h3>Кто ты из новогодних персонажей?</h3>
+    <div id="personaQuiz"></div>
+    <p id="personaResult" style="text-align: center; margin-top: 15px; font-weight: bold; color: var(--neon-pink);"></p>
+</div>
+
         </div> <!-- КОНЕЦ .content -->
 
         <!-- ПРАВАЯ ПАНЕЛЬ (Только для ПК) -->
@@ -231,5 +256,21 @@
     </div>
 
     <script src="script.js"></script>
+
+    <!-- Новогодняя ёлка в углу -->
+<div class="corner-tree" id="cornerTree">
+    <div class="tree-star">⭐</div>
+    <div class="tree-body">
+        <div class="tree-tier tier1"></div>
+        <div class="tree-tier tier2"></div>
+        <div class="tree-tier tier3"></div>
+        <div class="tree-lights">
+            <span class="tree-bulb"></span><span class="tree-bulb"></span>
+            <span class="tree-bulb"></span><span class="tree-bulb"></span>
+            <span class="tree-bulb"></span><span class="tree-bulb"></span>
+        </div>
+    </div>
+    <div class="tree-trunk"></div>
+</div>
 </body>
 </html>
