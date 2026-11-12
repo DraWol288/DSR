@@ -513,3 +513,304 @@ recipeItems.forEach(item => {
         item.classList.toggle('bought');
     });
 });
+
+/* ============================================================
+   ВИЗУАЛ И АТМОСФЕРА
+   ============================================================ */
+
+// ---------- 1. ПАРАЛЛАКС-ЗВЁЗДЫ ----------
+(function initStars() {
+    const layer = document.getElementById('starsLayer');
+    if (!layer) return;
+    const starCount = 80;
+    const stars = [];
+    for (let i = 0; i < starCount; i++) {
+        const s = document.createElement('div');
+        s.classList.add('star');
+        const size = Math.random() * 2 + 1;
+        s.style.width = size + 'px';
+        s.style.height = size + 'px';
+        s.style.left = Math.random() * 100 + '%';
+        s.style.top = Math.random() * 100 + '%';
+        s.style.animationDuration = (Math.random() * 3 + 2) + 's';
+        s.style.animationDelay = (Math.random() * 3) + 's';
+        // Скорость параллакса для каждой звезды
+        s.dataset.parallax = (Math.random() * 0.3 + 0.05).toFixed(2);
+        layer.appendChild(s);
+        stars.push(s);
+    }
+    // Параллакс при движении мыши
+    let mouseX = 0, mouseY = 0;
+    document.addEventListener('mousemove', (e) => {
+        mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+        mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+        stars.forEach(s => {
+            const p = parseFloat(s.dataset.parallax);
+            s.style.transform = `translate(${mouseX * 20 * p}px, ${mouseY * 20 * p}px)`;
+        });
+    });
+})();
+
+// ---------- 2. КУРСОР-ЧАСТИЦЫ ПРИ КЛИКЕ ----------
+(function initClickParticles() {
+    const container = document.getElementById('clickParticles');
+    if (!container) return;
+    const symbols = ['❅', '❆', '✻', '✦', '❄'];
+    document.addEventListener('click', (e) => {
+        const count = 3;
+        for (let i = 0; i < count; i++) {
+            const p = document.createElement('div');
+            p.classList.add('click-flake');
+            p.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+            p.style.left = (e.clientX + (Math.random() - 0.5) * 30) + 'px';
+            p.style.top = (e.clientY + (Math.random() - 0.5) * 30) + 'px';
+            p.style.color = Math.random() > 0.5 ? 'var(--neon-cyan)' : 'var(--neon-pink)';
+            p.style.fontSize = (Math.random() * 10 + 12) + 'px';
+            container.appendChild(p);
+            setTimeout(() => p.remove(), 800);
+        }
+    });
+})();
+
+// ---------- 3. ЗВУКИ (Web Audio API, без внешних файлов) ----------
+const soundEngine = (function() {
+    let ctx = null;
+    let muted = false;
+    function getCtx() {
+        if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
+        return ctx;
+    }
+    function playTone(freq, duration, type = 'sine', volume = 0.1) {
+        if (muted) return;
+        try {
+            const c = getCtx();
+            const osc = c.createOscillator();
+            const gain = c.createGain();
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, c.currentTime);
+            gain.gain.setValueAtTime(volume, c.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, c.currentTime + duration);
+            osc.connect(gain);
+            gain.connect(c.destination);
+            osc.start();
+            osc.stop(c.currentTime + duration);
+        } catch (e) { /* игнорируем */ }
+    }
+    return {
+        click: () => playTone(880, 0.08, 'triangle', 0.05),
+        success: () => {
+            playTone(523, 0.12, 'sine', 0.08);
+            setTimeout(() => playTone(659, 0.12, 'sine', 0.08), 100);
+            setTimeout(() => playTone(784, 0.25, 'sine', 0.08), 200);
+        },
+        bell: () => playTone(1200, 0.4, 'sine', 0.06),
+        error: () => playTone(200, 0.2, 'sawtooth', 0.06),
+        toggleMute: () => { muted = !muted; return muted; },
+        isMuted: () => muted
+    };
+})();
+
+// Навешиваем звук на кнопки/действия
+document.addEventListener('click', (e) => {
+    if (e.target.closest('button') || e.target.closest('.quiz-option') ||
+        e.target.closest('.tree-bulb') || e.target.closest('.atm-btn')) {
+        soundEngine.click();
+    }
+});
+
+// ---------- 4. КНОПКА MUTE ----------
+const muteBtn = document.getElementById('muteBtn');
+if (muteBtn) {
+    muteBtn.addEventListener('click', () => {
+        const isMuted = soundEngine.toggleMute();
+        muteBtn.innerText = isMuted ? '🔇' : '🔊';
+        muteBtn.classList.toggle('active', isMuted);
+    });
+}
+
+// ---------- 5. СНЕЖНАЯ БУРЯ ----------
+const stormBtn = document.getElementById('stormBtn');
+let stormActive = false;
+let stormTimer = null;
+if (stormBtn) {
+    stormBtn.addEventListener('click', () => {
+        stormActive = !stormActive;
+        document.body.classList.toggle('storm', stormActive);
+        stormBtn.classList.toggle('active', stormActive);
+        if (stormActive) {
+            // Ускоряем создание снега
+            window._stormInterval = setInterval(createSnow, 60);
+            stormTimer = setTimeout(() => {
+                // Авто-выключение через 15 секунд
+                if (stormActive) stormBtn.click();
+            }, 15000);
+        } else {
+            clearInterval(window._stormInterval);
+            clearTimeout(stormTimer);
+        }
+    });
+}
+
+// ---------- 6. ЁЛКА В УГЛУ ----------
+const cornerTree = document.getElementById('cornerTree');
+if (cornerTree) {
+    cornerTree.addEventListener('click', () => {
+        cornerTree.classList.add('tree-glow');
+        soundEngine.bell();
+        // Мигаем всеми лампочками
+        const bulbs = cornerTree.querySelectorAll('.tree-bulb');
+        bulbs.forEach((b, i) => {
+            setTimeout(() => {
+                b.style.transform = 'scale(2)';
+                setTimeout(() => b.style.transform = '', 200);
+            }, i * 60);
+        });
+        setTimeout(() => cornerTree.classList.remove('tree-glow'), 1000);
+    });
+}
+
+/* ============================================================
+   ТЕМАТИЧЕСКИЕ ФИШКИ
+   ============================================================ */
+
+// ---------- 7. ГЕНЕРАТОР НОВОГОДНЕГО ИМЕНИ ----------
+(function initNameGen() {
+    const box = document.getElementById('nameGenBox');
+    const btn = document.getElementById('nameGenBtn');
+    if (!box || !btn) return;
+
+    const adjectives = [
+        'Великолепный', 'Снежный', 'Неоновый', 'Морозный', 'Праздничный',
+        'Оливье-мастер', 'Сессионный', 'Гирляндо-владелец', 'Мандариновый',
+        'Код-волшебник', 'Снеговико-повелитель', 'Подарко-раздающий',
+        'Ёлочный', 'Багфикс-герой', 'Новогодний', 'Сияющий'
+    ];
+    const titles = [
+        'Стас Великолепный', 'Стас Снежный', 'Стас Неоновый',
+        'Стас Морозный', 'Стас Праздничный', 'Стас Оливье-мастер',
+        'Стас Сессионный', 'Стас Гирляндо-владелец', 'Стас Мандариновый',
+        'Стас Код-волшебник', 'Стас Снеговико-повелитель',
+        'Стас Подарко-раздающий', 'Стас Ёлочный', 'Стас Багфикс-герой',
+        'Стас Новогодний', 'Стас Сияющий'
+    ];
+    // Дополнительные суффиксы для разнообразия
+    const suffixes = [
+        '', '', '', ' и Повелитель Мандаринов', ' — Гроза Дедлайнов',
+        ' — Друг Оленей', ' — Хранитель Оливье', ' — Мастер Снежинок'
+    ];
+
+    btn.addEventListener('click', () => {
+        const base = titles[Math.floor(Math.random() * titles.length)];
+        const suffix = suffixes[Math.floor(Math.random() * suffixes.length)];
+        box.innerText = base + suffix;
+        box.classList.remove('pop');
+        void box.offsetWidth; // перезапуск анимации
+        box.classList.add('pop');
+        soundEngine.success();
+    });
+})();
+
+// ---------- 8. ТЕСТ «КТО ТЫ ИЗ ПЕРСОНАЖЕЙ» ----------
+(function initPersonaQuiz() {
+    const container = document.getElementById('personaQuiz');
+    const resultEl = document.getElementById('personaResult');
+    if (!container || !resultEl) return;
+
+    // Каждый ответ даёт очки одному из персонажей
+    // Персонажи: ded (Дед Мороз), olen (Олень), sneg (Снеговик), elf (Эльф)
+    const questions = [
+        {
+            q: '1. Твой идеальный новогодний вечер?',
+            options: [
+                { text: 'Раздавать подарки всем вокруг', type: 'ded' },
+                { text: 'Носиться по сугробам', type: 'olen' },
+                { text: 'Стоять на месте и улыбаться', type: 'sneg' },
+                { text: 'Помогать всем и всё успевать', type: 'elf' }
+            ]
+        },
+        {
+            q: '2. Что у тебя в кармане?',
+            options: [
+                { text: 'Список хороших детей', type: 'ded' },
+                { text: 'Морковка на перекус', type: 'olen' },
+                { text: 'Пуговица (запасная)', type: 'sneg' },
+                { text: 'Инструкция по сборке подарков', type: 'elf' }
+            ]
+        },
+        {
+            q: '3. Твой главный навык?',
+            options: [
+                { text: 'Появляться вовремя (почти)', type: 'ded' },
+                { text: 'Быстро бегать', type: 'olen' },
+                { text: 'Не таять при -5°C', type: 'sneg' },
+                { text: 'Работать в команде', type: 'elf' }
+            ]
+        },
+        {
+            q: '4. Что тебя бесит больше всего?',
+            options: [
+                { text: 'Когда не верят в чудо', type: 'ded' },
+                { text: 'Когда нет морковки', type: 'olen' },
+                { text: 'Когда тает нос', type: 'sneg' },
+                { text: 'Когда дедлайны горят', type: 'elf' }
+            ]
+        }
+    ];
+
+    const personas = {
+        ded: {
+            name: '🎅 Дед Мороз',
+            desc: 'Ты — главный по подаркам и чудесам! У тебя доброе сердце, ты любишь делать приятно другим. В новом году тебя ждёт много благодарностей (и, возможно, борода).'
+        },
+        olen: {
+            name: '🦌 Олень',
+            desc: 'Ты — энергия и скорость! Ты всегда в движении, любишь приключения и не боишься сугробов. Главное — не забывай иногда останавливаться и кушать печеньки.'
+        },
+        sneg: {
+            name: '⛄ Снеговик',
+            desc: 'Ты — надёжность и спокойствие! Ты всегда на месте, всегда улыбаешься и не теряешь голову (даже когда она из снега). В новом году тебя ждёт стабильность и уют.'
+        },
+        elf: {
+            name: '🧝 Эльф',
+            desc: 'Ты — мастер на все руки! Ты помогаешь всем, успеваешь везде и всегда знаешь, что делать. В новом году тебя ждёт много классных проектов и заслуженных наград.'
+        }
+    };
+
+    let scores = { ded: 0, olen: 0, sneg: 0, elf: 0 };
+    let answeredCount = 0;
+
+    questions.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.classList.add('quiz-question');
+        div.innerHTML = `<p>${item.q}</p>`;
+        item.options.forEach((opt) => {
+            const btn = document.createElement('div');
+            btn.classList.add('quiz-option');
+            btn.innerText = opt.text;
+            btn.addEventListener('click', function() {
+                if (div.dataset.answered) return;
+                div.dataset.answered = 'true';
+                // Помечаем выбранный
+                div.querySelectorAll('.quiz-option').forEach(o => o.classList.add('disabled'));
+                this.classList.add('selected');
+                scores[opt.type]++;
+                answeredCount++;
+                soundEngine.click();
+
+                if (answeredCount === questions.length) {
+                    // Определяем победителя
+                    let winner = 'ded';
+                    let max = -1;
+                    for (const key in scores) {
+                        if (scores[key] > max) { max = scores[key]; winner = key; }
+                    }
+                    const p = personas[winner];
+                    resultEl.innerHTML = `<div style="font-size: 20px; margin-bottom: 10px;">${p.name}</div><div style="font-size: 14px; font-weight: normal; color: #ccc; line-height: 1.6;">${p.desc}</div>`;
+                    soundEngine.success();
+                }
+            });
+            div.appendChild(btn);
+        });
+        container.appendChild(div);
+    });
+})();
