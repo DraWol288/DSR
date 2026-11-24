@@ -618,11 +618,30 @@ document.addEventListener('click', (e) => {
     }
 });
 
-// ---------- 4. КНОПКА MUTE ----------
+// ---------- 4. КНОПКА MUTE (с поддержкой своего аудиофайла) ----------
 const muteBtn = document.getElementById('muteBtn');
+const customSound = document.getElementById('myCustomSound'); // Наш аудио-тег
+
 if (muteBtn) {
     muteBtn.addEventListener('click', () => {
+        // 1. Переключаем встроенные (синтезированные) звуки
         const isMuted = soundEngine.toggleMute();
+        
+        // 2. Управляем вашим аудиофайлом
+        if (customSound) {
+            if (!isMuted) {
+                // Если звук включен — запускаем музыку
+                // play() возвращает промис, его нужно обработать, т.к. браузеры могут блокировать автозапуск
+                customSound.play().catch(error => {
+                    console.log("Не удалось воспроизвести звук. Возможно, нужно сначала кликнуть по странице.", error);
+                });
+            } else {
+                // Если звук выключен — ставим на паузу
+                customSound.pause();
+            }
+        }
+
+        // 3. Меняем иконку на кнопке
         muteBtn.innerText = isMuted ? '🔇' : '🔊';
         muteBtn.classList.toggle('active', isMuted);
     });
